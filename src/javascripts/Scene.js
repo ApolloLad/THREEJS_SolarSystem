@@ -4,6 +4,33 @@ let OrbitControls = require("threejs-controls/OrbitControls")
 import * as dat from 'dat.gui'
 import { maxHeaderSize } from 'http';
 
+function getRandomStarField(numberOfStars, width, height) {
+    var canvas = document.createElement('CANVAS');
+
+	canvas.width = width;
+	canvas.height = height;
+
+	var ctx = canvas.getContext('2d');
+
+	ctx.fillStyle="black";
+	ctx.fillRect(0, 0, width, height);
+
+	for (var i = 0; i < numberOfStars; ++i) {
+		var radius = Math.random() * 2;
+		var x = Math.floor(Math.random() * width);
+		var y = Math.floor(Math.random() * height);
+
+		ctx.beginPath();
+		ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
+		ctx.fillStyle = 'white';
+		ctx.fill();
+	}
+
+	var texture = new THREE.Texture(canvas);
+	texture.needsUpdate = true;
+	return texture;
+};
+
 export function displayScene()
 {
 
@@ -11,17 +38,12 @@ export function displayScene()
     let canvas = document.querySelector("#webgl-scene")
     let scene = new THREE.Scene()
     let renderer = new THREE.WebGLRenderer()
-    let camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, .1, 80000)
+    let camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, .1, 100000)
     camera.position.set(550, 530, 550)
-    //camera.lookAt(scene.position)
     scene.add(camera)
     
 
     renderer.setSize(canvas.clientWidth, canvas.clientHeight)
-    //renderer.setClearColor(0x000000)
-
-    //Setting background texture
-    scene.background = new THREE.TextureLoader().load('./images/MilkyWay.png')
 
     //Texture loader for loading textures on objects
     let texLoader = new THREE.TextureLoader()
@@ -31,21 +53,16 @@ export function displayScene()
  
 
     //StarField 
-   // let starGeometry = new THREE.SphereGeometry(10000, 50, 50)
-  //  let starMaterial = new THREE.MeshPhongMaterial({
-    //    map: texLoader.load('./images/starfield.jpg', function(texture){
-  //          texture.wrapS = THREE.RepeatWrapping
-  //          texture.wrapT = THREE.RepeatWrapping
-    //        texture.repeat.set(3,3)
-  //          renderer.render(scene,camera)
-  ////      }),
-    //    side: THREE.DoubleSide,
-   //     shininess: 0
-   // })
-   // let starField = new THREE.Mesh(starGeometry, starMaterial)
-  //  scene.add(starField)
+    let starGeometry = new THREE.BoxGeometry(100000, 100000, 100000);
+    let starMaterial = new THREE.MeshBasicMaterial({
+    map: getRandomStarField(1000, 2048, 2048),
+	side: THREE.BackSide
+    });
+    let sky = new THREE.Mesh(starGeometry, starMaterial);
+    scene.add(sky);
+
     //Sun
-     let geometry = new THREE.SphereGeometry(432, 40, 40)
+     let geometry = new THREE.SphereGeometry(432, 60, 60)
      let material = new THREE.MeshBasicMaterial({map: texLoader.load("./images/Sun.jpg")})
      let sun = new THREE.Mesh(geometry, material)
      sun.name = 'sun'
@@ -53,44 +70,44 @@ export function displayScene()
      scene.add(sun)
 
      //Mercury
-     geometry = new THREE.SphereGeometry(25, 40, 40)
+     geometry = new THREE.SphereGeometry(25, 60, 60)
      material = new THREE.MeshLambertMaterial({map: texLoader.load("./images/Mercury.jpg")})
      let Mercury = new THREE.Mesh(geometry, material)
      Mercury.name = 'Mercury'
      //Mercury.position.set(430,0,0)
-     let MercuryR = 862
+     let MercuryR = 1062
      Mercury.castShadow = true;
      Mercury.recieveShadow = true;
      scene.add(Mercury)
 
      //Venus
-     geometry = new THREE.SphereGeometry(60, 40, 40)
+     geometry = new THREE.SphereGeometry(60, 60, 60)
      material = new THREE.MeshLambertMaterial({map: texLoader.load("./images/Venus.jpg")})
      let Venus = new THREE.Mesh(geometry, material)
      Venus.name = 'Venus'
      //Venus.position.set(680,0,0)
-     let VenusR = 1112
+     let VenusR = 2112
      Venus.castShadow = true;
      Venus.recieveShadow = true;
      scene.add(Venus)
 
 
     //Moon
-    geometry = new THREE.SphereGeometry(12, 40, 40)
+    geometry = new THREE.SphereGeometry(12, 60, 60)
     material = new THREE.MeshLambertMaterial({map: texLoader.load("./images/Mercury.jpg")})
     let Moon = new THREE.Mesh(geometry, material)
     Moon.name = 'Moon'
-    let MoonR = 150
+    let MoonR = 250
     Moon.castShadow = true;
     Moon.recieveShadow = true;
     //Earth.add(Moon)
 
      //Earth
-     geometry = new THREE.SphereGeometry(65, 40, 40)
+     geometry = new THREE.SphereGeometry(65, 60, 60)
      material = new THREE.MeshLambertMaterial({map: texLoader.load("./images/Earth.jpg")})
      let Earth = new THREE.Mesh(geometry, material)
      Earth.name = 'Earth'
-     let EarthR = 1342
+     let EarthR = 2342
      //Earth.position.set(910, 0, 0)
      //Earth.position.x = r * 
      Earth.castShadow = true;
@@ -99,29 +116,29 @@ export function displayScene()
      scene.add(Earth)
 
      //Mars
-     geometry = new THREE.SphereGeometry(33, 40, 40)
+     geometry = new THREE.SphereGeometry(33, 60, 60)
      material = new THREE.MeshLambertMaterial({map: texLoader.load("./images/Mars.jpg")})
      let Mars = new THREE.Mesh(geometry, material)
      Mars.name = 'Mars'
      //Mars.position.set(1270,0,0)
-     let MarsR = 1702
+     let MarsR = 2702
      Mars.castShadow = true;
      Mars.recieveShadow = true;
      scene.add(Mars)
 
 
      //Jupiter
-     geometry = new THREE.SphereGeometry(715, 40, 40)
-     material = new THREE.MeshLambertMaterial({map: texLoader.load("./images/Jupiter.jpg")})
+     geometry = new THREE.SphereGeometry(715, 60, 60)
+     material = new THREE.MeshPhongMaterial({map: texLoader.load("./images/Jupiter.jpg")})
      let Jupiter = new THREE.Mesh(geometry, material)
      Jupiter.name = 'Jupiter'
      //Jupiter.position.set(5080,0,0)
-     let JupiterR = 6512
+     let JupiterR = 7512
      Jupiter.castShadow = true;
      Jupiter.recieveShadow = true;
      scene.add(Jupiter)
 
-     geometry = new THREE.RingGeometry(1015, 1030, 40)
+     geometry = new THREE.RingGeometry(1015, 1030, 60, 60)
      material = new THREE.MeshLambertMaterial({color: 0xFFFFFF, side: THREE.DoubleSide})
      let JupRing = new THREE.Mesh(geometry, material)
      JupRing.castShadow = true;
@@ -131,7 +148,7 @@ export function displayScene()
      //////////////Jupiters Moons//////////////
      
     //IO
-    geometry = new THREE.SphereGeometry(11, 40, 40)
+    geometry = new THREE.SphereGeometry(11, 60, 60)
     material = new THREE.MeshLambertMaterial({
             map: new THREE.TextureLoader().load('./images/IO.PNG')
         })
@@ -143,7 +160,7 @@ export function displayScene()
     Jupiter.add(IO)
 
     //Europa
-    geometry = new THREE.SphereGeometry(18, 40, 40)
+    geometry = new THREE.SphereGeometry(18, 60, 60)
     material = new THREE.MeshLambertMaterial({
             map: new THREE.TextureLoader().load('./images/Europa.PNG')
         })
@@ -154,7 +171,7 @@ export function displayScene()
     Jupiter.add(Europa)
 
     //Ganymede
-    geometry = new THREE.SphereGeometry(26, 40, 40)
+    geometry = new THREE.SphereGeometry(26, 60, 60)
     material = new THREE.MeshLambertMaterial({
             map: new THREE.TextureLoader().load('./images/Ganymede.PNG')
         })
@@ -165,7 +182,7 @@ export function displayScene()
     Jupiter.add(Ganymede)
 
     //Callisto
-    geometry = new THREE.SphereGeometry(25, 40, 40)
+    geometry = new THREE.SphereGeometry(25, 60, 60)
     material = new THREE.MeshLambertMaterial({
             map: new THREE.TextureLoader().load('./images/Callisto.PNG')
         })
@@ -178,7 +195,7 @@ export function displayScene()
     //////////////////////////////////////////
 
     //Saturns rings
-    geometry = new THREE.RingGeometry(803, 1403, 40)
+    geometry = new THREE.RingGeometry(803, 1403, 60, 60)
     material = new THREE.MeshLambertMaterial({color: 0xBBBBBB, side: THREE.DoubleSide})
     let Satring = new THREE.Mesh(geometry, material)
     Satring.castShadow = true;
@@ -186,12 +203,12 @@ export function displayScene()
     Satring.rotation.x = 1.9
     
       //Saturn
-      geometry = new THREE.SphereGeometry(603, 40, 40)
+      geometry = new THREE.SphereGeometry(603, 60, 60)
       material = new THREE.MeshLambertMaterial({map:texLoader.load("./images/Saturn.jpg")})
       let Saturn = new THREE.Mesh(geometry, material)
       Saturn.name = 'Saturn'
       //Saturn.position.set(9380,0,0)
-      let SaturnR = 9812
+      let SaturnR = 10812
       Saturn.castShadow = true;
       Saturn.recieveShadow = true;
       Saturn.add(Satring)
@@ -199,7 +216,7 @@ export function displayScene()
 
       //Saturns Moons
       //Enceladus
-      geometry = new THREE.SphereGeometry(3.1, 40, 40)
+      geometry = new THREE.SphereGeometry(3.1, 60, 60)
       material = new THREE.MeshLambertMaterial({
               map: new THREE.TextureLoader().load('./images/Enceladus.PNG')
           })
@@ -211,7 +228,7 @@ export function displayScene()
       Saturn.add(Enceladus)
 
       //Titan
-      geometry = new THREE.SphereGeometry(26, 40, 40)
+      geometry = new THREE.SphereGeometry(26, 60, 60)
       material = new THREE.MeshLambertMaterial({
               map: new THREE.TextureLoader().load('./images/Enceladus.PNG')
           })
@@ -223,13 +240,13 @@ export function displayScene()
       Saturn.add(Titan)
 
       //Uranus Rings
-      geometry = new THREE.RingGeometry(560, 600, 40)
+      geometry = new THREE.RingGeometry(560, 600, 60)
       material = new THREE.MeshLambertMaterial({color: 0xFFFFFF, side: THREE.DoubleSide})
       let UrRing1 = new THREE.Mesh(geometry, material)
       UrRing1.castShadow = true;
       UrRing1.recieveShadow = true;
 
-      geometry = new THREE.RingGeometry(580, 620, 40)
+      geometry = new THREE.RingGeometry(580, 620, 60)
       material = new THREE.MeshLambertMaterial({color: 0xFFFFFF, side: THREE.DoubleSide})
       let UrRing2 = new THREE.Mesh(geometry, material)
       UrRing2.castShadow = true;
@@ -237,11 +254,11 @@ export function displayScene()
       
 
       //Uranus
-      geometry = new THREE.SphereGeometry(260, 40, 40)
+      geometry = new THREE.SphereGeometry(260, 60, 60)
       material = new THREE.MeshLambertMaterial({map: texLoader.load("./images/Uranus.jpeg")})
       let Uranus = new THREE.Mesh(geometry, material)
       Uranus.name = 'Uranus'
-      let UranusR = 18432
+      let UranusR = 19432
       Uranus.castShadow = true
       Uranus.recieveShadow = true
       Uranus.add(UrRing1)
@@ -249,18 +266,18 @@ export function displayScene()
       scene.add(Uranus)
 
       //Neptune
-      geometry = new THREE.SphereGeometry(250, 40, 40)
+      geometry = new THREE.SphereGeometry(250, 60, 60)
       material = new THREE.MeshLambertMaterial({map:texLoader.load("./images/Neptune.jpg")})
       let Neptune = new THREE.Mesh(geometry, material)
       Neptune.name = 'Neptune'
       //Neptune.position.set(28300,0,0)
-      let NeptuneR = 28732
+      let NeptuneR = 29732
       Neptune.castShadow = true
       Neptune.recieveShadow = true
       scene.add(Neptune)
 
       //Triton
-      geometry = new THREE.SphereGeometry(9, 40, 40)
+      geometry = new THREE.SphereGeometry(9, 60, 60)
       material = new THREE.MeshLambertMaterial({
               map: new THREE.TextureLoader().load('./images/Enceladus.PNG')
           })
@@ -271,18 +288,85 @@ export function displayScene()
       Neptune.add(Triton)
 
       //Pluto
-      geometry = new THREE.SphereGeometry(19, 40, 40)
+      geometry = new THREE.SphereGeometry(19, 60, 60)
       material = new THREE.MeshLambertMaterial({map: texLoader.load("./images/Pluto.jpg")})
       let Pluto = new THREE.Mesh(geometry, material)
       Pluto.name = 'Pluto'
       //Pluto.position.set(50000,0,0)
-      let PlutoR = 50432
+      let PlutoR = 51432
       Pluto.castShadow = true
       scene.add(Pluto)
 
+      //Orbit Paths
+
+      let orbits = new THREE.Group()
+
+      //Mercury Orbit
+      geometry = new THREE.RingGeometry(MercuryR - 5, MercuryR, 60)
+      material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
+      let MercuryOrbit = new THREE.Mesh(geometry, material)
+      MercuryOrbit.rotation.x = 1.57
+      orbits.add(MercuryOrbit)
+
+        //Venus Orbit
+        geometry = new THREE.RingGeometry(VenusR - 5, VenusR, 60)
+        material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
+        let VenusOrbit = new THREE.Mesh(geometry, material)
+        VenusOrbit.rotation.x = 1.57
+        orbits.add(VenusOrbit)
+
+        //Earth Orbit
+        geometry = new THREE.RingGeometry(EarthR - 5, EarthR, 60)
+        material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
+        let EarthOrbit = new THREE.Mesh(geometry, material)
+        EarthOrbit.rotation.x = 1.57
+        orbits.add(EarthOrbit)
+
+    //Mars Orbit
+      geometry = new THREE.RingGeometry(MarsR - 5, MarsR, 60)
+      material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
+      let MarsOrbit = new THREE.Mesh(geometry, material)
+      MarsOrbit.rotation.x = 1.57
+      orbits.add(MarsOrbit)
+
+    //Jupiter Orbit
+    geometry = new THREE.RingGeometry(JupiterR - 15, JupiterR, 60)
+    material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
+    let JupiterOrbit = new THREE.Mesh(geometry, material)
+    JupiterOrbit.rotation.x = 1.57
+    orbits.add(JupiterOrbit)
+
+    //Saturn Orbit
+    geometry = new THREE.RingGeometry(SaturnR - 30, SaturnR, 100)
+    material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
+    let SaturnOrbit = new THREE.Mesh(geometry, material)
+    SaturnOrbit.rotation.x = 1.57
+    orbits.add(SaturnOrbit)
+
+    //Uranus Orbit
+    geometry = new THREE.RingGeometry(UranusR - 50, UranusR, 100)
+    material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
+    let UranusOrbit = new THREE.Mesh(geometry, material)
+    UranusOrbit.rotation.x = 1.57
+    orbits.add(UranusOrbit)
+
+    //Neptune Orbit
+    geometry = new THREE.RingGeometry(NeptuneR - 50, NeptuneR, 100)
+    material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
+    let NeptuneOrbit = new THREE.Mesh(geometry, material)
+    NeptuneOrbit.rotation.x = 1.57
+    orbits.add(NeptuneOrbit)
+
+    //Pluto Orbit
+    geometry = new THREE.RingGeometry(PlutoR - 50, PlutoR, 1000)
+    material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
+    let PlutoOrbit = new THREE.Mesh(geometry, material)
+    PlutoOrbit.rotation.x = 1.57
+    orbits.add(PlutoOrbit)
+
 
      // Light sources
-     let pointLight = new THREE.PointLight(0xFFFFFF, 1.5, 0, 2)
+     let pointLight = new THREE.PointLight(0xFFFFFF, 2, 0, 2)
      renderer.shadowMap.enabled = true;
      pointLight.position.set(0, 100, 0)
      pointLight.castShadow = true;
@@ -298,16 +382,31 @@ export function displayScene()
         renderer.render(scene, camera)
     })
 
-    let r = 100
     let theta = 0;
     let orbitSpeed = 3
     let dTheta = 2 * Math.PI / 6000;
+    
 
+    let controls = {
+        orbit: true,
+        rings: false
+    }
     function animate()
     {
-        //requestAnimationFrame(animate)
+       
         camera.lookAt(scene.position)
-        //camera.lookAt(Pluto.position)
+    
+        if(controls.rings == true)
+        {
+            scene.add(orbits)
+        }
+        else
+        {
+            scene.remove(orbits)
+        }
+
+        if(controls.orbit == true)
+        {
         Earth.rotation.y += -.0009
         Moon.rotation.y += -.0009
         Mars.rotation.y += -.0009
@@ -386,8 +485,9 @@ export function displayScene()
         orbitSpeed = .1
         Pluto.position.x = PlutoR * Math.cos(theta * orbitSpeed)
         Pluto.position.z = PlutoR * Math.sin(theta * orbitSpeed)
+        }
 
-        //Earth.rotation.x += -.0005
+        
         renderer.render(scene, camera)
         cameraControls.update()
         requestAnimationFrame(animate)
@@ -395,4 +495,10 @@ export function displayScene()
 
     animate();
 
+    let gui = new dat.GUI()
+    let f = gui.addFolder("Orbit")
+    f.add(controls, 'orbit').onChange(animate)
+    f = gui.addFolder("Paths")
+    f.add(controls, 'rings').onChange(animate)
+    f.open()
 }
