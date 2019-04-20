@@ -25,11 +25,13 @@
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.28.3",
-    "webpack-cli": "^3.2.0",
+    "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
+    "dat.gui": "^0.7.6",
     "jquery": "^3.3.1",
-    "three": "^0.99.0"
+    "three": "^0.99.0",
+    "threejs-controls": "^1.0.6"
   }
 }
