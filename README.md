@@ -8,3 +8,7 @@ My final project for my Computer Graphics course. We utilized WebGL to implement
 
 # Installation
 
+1. Clone the repository.
+2. Ensure Node.js is installed on your machine
+3. In the project directory, run the command "npm run live" and open localhost:8080 in a web browser.
+
