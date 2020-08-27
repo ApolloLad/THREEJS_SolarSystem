@@ -1,0 +1,15 @@
+Mercury: 25
+Venus: 60
+Earth: 65
+Mars: 33
+Jupiter: 715
+Saturn: 603
+Uranus: 260
+Neptune: 250
+Pluto: 19
+Ceres: 8.5
+
+https://www.universetoday.com/35960/size-of-the-planets/
+https://www.universetoday.com/15462/how-far-are-the-planets-from-the-sun/
+http://planetfacts.org/orbital-speed-of-planets-in-order/
+https://andreasrohner.at/posts/Web%20Development/JavaScript/Random-starfield-generator-for-THREE-js/
