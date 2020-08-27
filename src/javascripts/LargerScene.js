@@ -1,14 +1,9 @@
-/*
-    Interactive Solar System using Javascript, WebGL, and the THREE.js framework
-    Author: Dylan Padilla
-*/
 import * as THREE from 'three'
 window.THREE = THREE
 let OrbitControls = require("threejs-controls/OrbitControls")
 import * as dat from 'dat.gui'
 import { maxHeaderSize } from 'http';
 
-//function to create star field
 function getRandomStarField(numberOfStars, width, height) {
     var canvas = document.createElement('CANVAS');
 
@@ -36,21 +31,16 @@ function getRandomStarField(numberOfStars, width, height) {
 	return texture;
 };
 
-//function that displays scene and runs program
 export function displayScene()
 {
 
-    //defines the canvas which is an element on the index.html file
+
     let canvas = document.querySelector("#webgl-scene")
-    //defines THREE.js scene
     let scene = new THREE.Scene()
-    //renderer for rendering THREE.js content
     let renderer = new THREE.WebGLRenderer()
-    //defines the camera for the scene
-    let camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, .1, 100000)
-    //sets the camera to look at the specified location
-    camera.position.set(550, 530, 550)
-    
+    let camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, .1, 5000000000)
+    camera.position.set(55000, 53000, 55000)
+    scene.add(camera)
     
 
     renderer.setSize(canvas.clientWidth, canvas.clientHeight)
@@ -60,20 +50,19 @@ export function displayScene()
   
     //Add Objects: 
 
-    //This code block just creates the objects using THREE.js and adds them to the scene:
-    //--------------------------------------------------------------------------------//
+ 
 
     //StarField 
-    let starGeometry = new THREE.BoxGeometry(100000, 100000, 100000);
+    let starGeometry = new THREE.BoxGeometry(5000000000, 5000000000, 5000000000);
     let starMaterial = new THREE.MeshBasicMaterial({
-    map: getRandomStarField(1000, 2048, 2048),
+    map: getRandomStarField(5000, 2048, 2048),
 	side: THREE.BackSide
     });
     let sky = new THREE.Mesh(starGeometry, starMaterial);
     scene.add(sky);
 
     //Sun
-     let geometry = new THREE.SphereGeometry(432, 60, 60)
+     let geometry = new THREE.SphereGeometry(432170, 60, 60)
      let material = new THREE.MeshBasicMaterial({map: texLoader.load("./images/Sun.jpg")})
      let sun = new THREE.Mesh(geometry, material)
      sun.name = 'sun'
@@ -81,44 +70,44 @@ export function displayScene()
      scene.add(sun)
 
      //Mercury
-     geometry = new THREE.SphereGeometry(25, 60, 60)
+     geometry = new THREE.SphereGeometry(1516, 60, 60)
      material = new THREE.MeshLambertMaterial({map: texLoader.load("./images/Mercury.jpg")})
      let Mercury = new THREE.Mesh(geometry, material)
      Mercury.name = 'Mercury'
      //Mercury.position.set(430,0,0)
-     let MercuryR = 1062
+     let MercuryR = 3600000
      Mercury.castShadow = true;
      Mercury.recieveShadow = true;
      scene.add(Mercury)
 
      //Venus
-     geometry = new THREE.SphereGeometry(60, 60, 60)
+     geometry = new THREE.SphereGeometry(3760.4, 60, 60)
      material = new THREE.MeshLambertMaterial({map: texLoader.load("./images/Venus.jpg")})
      let Venus = new THREE.Mesh(geometry, material)
      Venus.name = 'Venus'
      //Venus.position.set(680,0,0)
-     let VenusR = 2112
+     let VenusR = 6700000
      Venus.castShadow = true;
      Venus.recieveShadow = true;
      scene.add(Venus)
 
 
     //Moon
-    geometry = new THREE.SphereGeometry(12, 60, 60)
+    geometry = new THREE.SphereGeometry(1079, 60, 60)
     material = new THREE.MeshLambertMaterial({map: texLoader.load("./images/Mercury.jpg")})
     let Moon = new THREE.Mesh(geometry, material)
     Moon.name = 'Moon'
-    let MoonR = 250
+    let MoonR = 23400
     Moon.castShadow = true;
     Moon.recieveShadow = true;
     //Earth.add(Moon)
 
      //Earth
-     geometry = new THREE.SphereGeometry(65, 60, 60)
+     geometry = new THREE.SphereGeometry(3958.8, 60, 60)
      material = new THREE.MeshLambertMaterial({map: texLoader.load("./images/Earth.jpg")})
      let Earth = new THREE.Mesh(geometry, material)
      Earth.name = 'Earth'
-     let EarthR = 2342
+     let EarthR = 9300000
      //Earth.position.set(910, 0, 0)
      //Earth.position.x = r * 
      Earth.castShadow = true;
@@ -127,29 +116,30 @@ export function displayScene()
      scene.add(Earth)
 
      //Mars
-     geometry = new THREE.SphereGeometry(33, 60, 60)
+     geometry = new THREE.SphereGeometry(2106, 60, 60)
      material = new THREE.MeshLambertMaterial({map: texLoader.load("./images/Mars.jpg")})
      let Mars = new THREE.Mesh(geometry, material)
      Mars.name = 'Mars'
      //Mars.position.set(1270,0,0)
-     let MarsR = 2702
+     let MarsR = 14200000
      Mars.castShadow = true;
      Mars.recieveShadow = true;
      scene.add(Mars)
 
 
      //Jupiter
-     geometry = new THREE.SphereGeometry(715, 60, 60)
+     geometry = new THREE.SphereGeometry(43441, 60, 60)
      material = new THREE.MeshPhongMaterial({map: texLoader.load("./images/Jupiter.jpg")})
      let Jupiter = new THREE.Mesh(geometry, material)
      Jupiter.name = 'Jupiter'
      //Jupiter.position.set(5080,0,0)
-     let JupiterR = 7512
+     let JupiterR = 48400000
      Jupiter.castShadow = true;
      Jupiter.recieveShadow = true;
      scene.add(Jupiter)
 
-     geometry = new THREE.RingGeometry(1015, 1030, 60, 60)
+     //Jupiter Ring
+     geometry = new THREE.RingGeometry(47000, 47500, 60, 60)
      material = new THREE.MeshLambertMaterial({color: 0xFFFFFF, side: THREE.DoubleSide})
      let JupRing = new THREE.Mesh(geometry, material)
      JupRing.castShadow = true;
@@ -159,54 +149,54 @@ export function displayScene()
      //////////////Jupiters Moons//////////////
      
     //IO
-    geometry = new THREE.SphereGeometry(11, 60, 60)
+    geometry = new THREE.SphereGeometry(1132, 60, 60)
     material = new THREE.MeshLambertMaterial({
             map: new THREE.TextureLoader().load('./images/IO.PNG')
         })
     let IO = new THREE.Mesh(geometry, material)
     IO.name = 'IO'
-    let IOR = 977
+    let IOR = 262219
     IO.castShadow = true;
     IO.recieveShadow = true;
     Jupiter.add(IO)
 
     //Europa
-    geometry = new THREE.SphereGeometry(18, 60, 60)
+    geometry = new THREE.SphereGeometry(970, 60, 60)
     material = new THREE.MeshLambertMaterial({
             map: new THREE.TextureLoader().load('./images/Europa.PNG')
         })
     let Europa= new THREE.Mesh(geometry, material)
     Europa.name = 'Europa'
-    let EuropaR = 1130
+    let EuropaR = 416940
     Europa.castShadow = true;
     Jupiter.add(Europa)
 
     //Ganymede
-    geometry = new THREE.SphereGeometry(26, 60, 60)
+    geometry = new THREE.SphereGeometry(1637, 60, 60)
     material = new THREE.MeshLambertMaterial({
             map: new THREE.TextureLoader().load('./images/Ganymede.PNG')
         })
     let Ganymede = new THREE.Mesh(geometry, material)
     Ganymede.name = 'Ganymede'
-    let GanymedeR = 1380
+    let GanymedeR = 664867
     Ganymede.castShadow = true;
     Jupiter.add(Ganymede)
 
     //Callisto
-    geometry = new THREE.SphereGeometry(25, 60, 60)
+    geometry = new THREE.SphereGeometry(1500, 60, 60)
     material = new THREE.MeshLambertMaterial({
             map: new THREE.TextureLoader().load('./images/Callisto.PNG')
         })
     let Callisto = new THREE.Mesh(geometry, material)
     Callisto.name = 'Callisto'
-    let CallistoR = 1915
+    let CallistoR = 1170042
     Callisto.castShadow = true;
     Jupiter.add(Callisto)
 
     //////////////////////////////////////////
 
     //Saturns rings
-    geometry = new THREE.RingGeometry(803, 1403, 60, 60)
+    geometry = new THREE.RingGeometry(37000, 37600, 60, 60)
     material = new THREE.MeshLambertMaterial({color: 0xBBBBBB, side: THREE.DoubleSide})
     let Satring = new THREE.Mesh(geometry, material)
     Satring.castShadow = true;
@@ -214,12 +204,12 @@ export function displayScene()
     Satring.rotation.x = 1.9
     
       //Saturn
-      geometry = new THREE.SphereGeometry(603, 60, 60)
+      geometry = new THREE.SphereGeometry(36184, 60, 60)
       material = new THREE.MeshLambertMaterial({map:texLoader.load("./images/Saturn.jpg")})
       let Saturn = new THREE.Mesh(geometry, material)
       Saturn.name = 'Saturn'
       //Saturn.position.set(9380,0,0)
-      let SaturnR = 10812
+      let SaturnR = 88700000
       Saturn.castShadow = true;
       Saturn.recieveShadow = true;
       Saturn.add(Satring)
@@ -251,13 +241,13 @@ export function displayScene()
       Saturn.add(Titan)
 
       //Uranus Rings
-      geometry = new THREE.RingGeometry(560, 600, 60)
+      geometry = new THREE.RingGeometry(16400, 16800, 60)
       material = new THREE.MeshLambertMaterial({color: 0xFFFFFF, side: THREE.DoubleSide})
       let UrRing1 = new THREE.Mesh(geometry, material)
       UrRing1.castShadow = true;
       UrRing1.recieveShadow = true;
 
-      geometry = new THREE.RingGeometry(580, 620, 60)
+      geometry = new THREE.RingGeometry(16000, 16200, 60)
       material = new THREE.MeshLambertMaterial({color: 0xFFFFFF, side: THREE.DoubleSide})
       let UrRing2 = new THREE.Mesh(geometry, material)
       UrRing2.castShadow = true;
@@ -265,11 +255,11 @@ export function displayScene()
       
 
       //Uranus
-      geometry = new THREE.SphereGeometry(260, 60, 60)
+      geometry = new THREE.SphereGeometry(15759, 60, 60)
       material = new THREE.MeshLambertMaterial({map: texLoader.load("./images/Uranus.jpeg")})
       let Uranus = new THREE.Mesh(geometry, material)
       Uranus.name = 'Uranus'
-      let UranusR = 19432
+      let UranusR = 180000000
       Uranus.castShadow = true
       Uranus.recieveShadow = true
       Uranus.add(UrRing1)
@@ -277,12 +267,12 @@ export function displayScene()
       scene.add(Uranus)
 
       //Neptune
-      geometry = new THREE.SphereGeometry(250, 60, 60)
+      geometry = new THREE.SphereGeometry(15300, 60, 60)
       material = new THREE.MeshLambertMaterial({map:texLoader.load("./images/Neptune.jpg")})
       let Neptune = new THREE.Mesh(geometry, material)
       Neptune.name = 'Neptune'
       //Neptune.position.set(28300,0,0)
-      let NeptuneR = 29732
+      let NeptuneR = 28000000000
       Neptune.castShadow = true
       Neptune.recieveShadow = true
       scene.add(Neptune)
@@ -299,81 +289,77 @@ export function displayScene()
       Neptune.add(Triton)
 
       //Pluto
-      geometry = new THREE.SphereGeometry(19, 60, 60)
+      geometry = new THREE.SphereGeometry(738.38, 60, 60)
       material = new THREE.MeshLambertMaterial({map: texLoader.load("./images/Pluto.jpg")})
       let Pluto = new THREE.Mesh(geometry, material)
       Pluto.name = 'Pluto'
       //Pluto.position.set(50000,0,0)
-      let PlutoR = 51432
+      let PlutoR = 40000000000
       Pluto.castShadow = true
       scene.add(Pluto)
 
-      //---------------------------------------------------------------------------------//
-
       //Orbit Paths
-
-      //Next we define how the objects will orbit either the sun or their parent planets
 
       let orbits = new THREE.Group()
 
       //Mercury Orbit
-      geometry = new THREE.RingGeometry(MercuryR - 5, MercuryR, 60)
+      geometry = new THREE.RingGeometry(MercuryR - 50000, MercuryR, 60)
       material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
       let MercuryOrbit = new THREE.Mesh(geometry, material)
       MercuryOrbit.rotation.x = 1.57
       orbits.add(MercuryOrbit)
 
         //Venus Orbit
-        geometry = new THREE.RingGeometry(VenusR - 5, VenusR, 60)
+        geometry = new THREE.RingGeometry(VenusR - 50000, VenusR, 60)
         material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
         let VenusOrbit = new THREE.Mesh(geometry, material)
         VenusOrbit.rotation.x = 1.57
         orbits.add(VenusOrbit)
 
         //Earth Orbit
-        geometry = new THREE.RingGeometry(EarthR - 5, EarthR, 60)
+        geometry = new THREE.RingGeometry(EarthR - 50000, EarthR, 60)
         material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
         let EarthOrbit = new THREE.Mesh(geometry, material)
         EarthOrbit.rotation.x = 1.57
         orbits.add(EarthOrbit)
 
     //Mars Orbit
-      geometry = new THREE.RingGeometry(MarsR - 5, MarsR, 60)
+      geometry = new THREE.RingGeometry(MarsR - 50000, MarsR, 60)
       material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
       let MarsOrbit = new THREE.Mesh(geometry, material)
       MarsOrbit.rotation.x = 1.57
       orbits.add(MarsOrbit)
 
     //Jupiter Orbit
-    geometry = new THREE.RingGeometry(JupiterR - 15, JupiterR, 60)
+    geometry = new THREE.RingGeometry(JupiterR - 150000, JupiterR, 60)
     material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
     let JupiterOrbit = new THREE.Mesh(geometry, material)
     JupiterOrbit.rotation.x = 1.57
     orbits.add(JupiterOrbit)
 
     //Saturn Orbit
-    geometry = new THREE.RingGeometry(SaturnR - 30, SaturnR, 100)
+    geometry = new THREE.RingGeometry(SaturnR - 300000, SaturnR, 100)
     material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
     let SaturnOrbit = new THREE.Mesh(geometry, material)
     SaturnOrbit.rotation.x = 1.57
     orbits.add(SaturnOrbit)
 
     //Uranus Orbit
-    geometry = new THREE.RingGeometry(UranusR - 50, UranusR, 100)
+    geometry = new THREE.RingGeometry(UranusR - 500000, UranusR, 100)
     material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
     let UranusOrbit = new THREE.Mesh(geometry, material)
     UranusOrbit.rotation.x = 1.57
     orbits.add(UranusOrbit)
 
     //Neptune Orbit
-    geometry = new THREE.RingGeometry(NeptuneR - 50, NeptuneR, 100)
+    geometry = new THREE.RingGeometry(NeptuneR - 500000, NeptuneR, 100)
     material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
     let NeptuneOrbit = new THREE.Mesh(geometry, material)
     NeptuneOrbit.rotation.x = 1.57
     orbits.add(NeptuneOrbit)
 
     //Pluto Orbit
-    geometry = new THREE.RingGeometry(PlutoR - 50, PlutoR, 1000)
+    geometry = new THREE.RingGeometry(PlutoR - 500000, PlutoR, 1000)
     material = new THREE.MeshBasicMaterial({color: 0x00FF00, side: THREE.DoubleSide})
     let PlutoOrbit = new THREE.Mesh(geometry, material)
     PlutoOrbit.rotation.x = 1.57
@@ -392,7 +378,6 @@ export function displayScene()
     
     canvas.appendChild(renderer.domElement)
 
-    //defines controls for moving the camera
     let cameraControls = new OrbitControls(camera, renderer.domElement)
     cameraControls.addEventListener("change", function(){
         renderer.render(scene, camera)
@@ -407,9 +392,6 @@ export function displayScene()
         orbit: true,
         rings: false
     }
-    scene.add(camera)
-    
-    //function that defines how the animation of the objects will work
     function animate()
     {
        
@@ -424,89 +406,86 @@ export function displayScene()
             scene.remove(orbits)
         }
 
-        //if the orbit flag is active, this is how the objects will orbit
         if(controls.orbit == true)
         {
-            //This next section utilizes trigonometry to define how the objects will orbit
-            //either the sun or the parent planet with a horizontal rotation 
-            Earth.rotation.y += -.0009
-            Moon.rotation.y += -.0009
-            Mars.rotation.y += -.0009
-            Jupiter.rotation.y += -.0009
-            Saturn.rotation.y += -.0009
-            Uranus.rotation.y += -.0009
-            Neptune.rotation.y += -.0009
-            Pluto.rotation.y += -.0009
+        Earth.rotation.y += -.0009
+        Moon.rotation.y += -.0009
+        Mars.rotation.y += -.0009
+        Jupiter.rotation.y += -.0009
+        Saturn.rotation.y += -.0009
+        Uranus.rotation.y += -.0009
+        Neptune.rotation.y += -.0009
+        Pluto.rotation.y += -.0009
 
-        
-            //Mercury
-            theta -= dTheta;
-            Mercury.position.x = MercuryR * Math.cos(theta * 2)
-            Mercury.position.z = MercuryR * Math.sin(theta * 2)
-            //Venus
-            orbitSpeed = 2
-            Venus.position.x = (VenusR * Math.cos((theta * orbitSpeed) + 2)) 
-            Venus.position.z = (VenusR * Math.sin((theta * orbitSpeed) + 2))
-            //Earth
-            orbitSpeed = 1.7
-            Earth.position.x = EarthR * Math.cos((theta * orbitSpeed) + 3)
-            Earth.position.z = EarthR * Math.sin((theta * orbitSpeed) + 3)
+       
+        //Mercury
+        theta -= dTheta;
+        Mercury.position.x = MercuryR * Math.cos(theta * 2)
+        Mercury.position.z = MercuryR * Math.sin(theta * 2)
+        //Venus
+        orbitSpeed = 2
+        Venus.position.x = (VenusR * Math.cos((theta * orbitSpeed) + 2)) 
+        Venus.position.z = (VenusR * Math.sin((theta * orbitSpeed) + 2))
+        //Earth
+        orbitSpeed = 1.7
+        Earth.position.x = EarthR * Math.cos((theta * orbitSpeed) + 3)
+        Earth.position.z = EarthR * Math.sin((theta * orbitSpeed) + 3)
 
-            //Moon
-            orbitSpeed = 5
-            Moon.position.x = MoonR * Math.cos(theta * orbitSpeed)
-            Moon.position.z = MoonR * Math.sin(theta * orbitSpeed)
-            //Mars
-            orbitSpeed = 1.4
-            Mars.position.x = MarsR * Math.cos(theta * orbitSpeed);
-            Mars.position.z = MarsR * Math.sin(theta * orbitSpeed);
-            //Jupiter
-            orbitSpeed = 1
-            Jupiter.position.x = JupiterR * Math.cos((theta * orbitSpeed) + 1)
-            Jupiter.position.z = JupiterR * Math.sin((theta * orbitSpeed) + 1)
+        //Moon
+        orbitSpeed = 5
+        Moon.position.x = MoonR * Math.cos(theta * orbitSpeed)
+        Moon.position.z = MoonR * Math.sin(theta * orbitSpeed)
+        //Mars
+        orbitSpeed = 1.4
+        Mars.position.x = MarsR * Math.cos(theta * orbitSpeed);
+        Mars.position.z = MarsR * Math.sin(theta * orbitSpeed);
+        //Jupiter
+        orbitSpeed = 1
+        Jupiter.position.x = JupiterR * Math.cos((theta * orbitSpeed) + 1)
+        Jupiter.position.z = JupiterR * Math.sin((theta * orbitSpeed) + 1)
 
-            orbitSpeed = 3
-            IO.position.x = IOR * Math.cos((theta * orbitSpeed) + 2)
-            IO.position.z = IOR * Math.sin((theta * orbitSpeed) + 2)
+        orbitSpeed = 3
+        IO.position.x = IOR * Math.cos((theta * orbitSpeed) + 2)
+        IO.position.z = IOR * Math.sin((theta * orbitSpeed) + 2)
 
-            Europa.position.x = EuropaR * Math.cos((theta * orbitSpeed) + 1)
-            Europa.position.z = EuropaR * Math.sin((theta * orbitSpeed) + 1)
+        Europa.position.x = EuropaR * Math.cos((theta * orbitSpeed) + 1)
+        Europa.position.z = EuropaR * Math.sin((theta * orbitSpeed) + 1)
 
-            Ganymede.position.x = GanymedeR * Math.cos((theta * orbitSpeed) + 5)
-            Ganymede.position.z = GanymedeR * Math.sin((theta * orbitSpeed) + 5)
+        Ganymede.position.x = GanymedeR * Math.cos((theta * orbitSpeed) + 5)
+        Ganymede.position.z = GanymedeR * Math.sin((theta * orbitSpeed) + 5)
 
-            Callisto.position.x = CallistoR * Math.cos(theta * orbitSpeed) 
-            Callisto.position.z = CallistoR * Math.sin(theta * orbitSpeed) 
-            //Saturn
-            orbitSpeed = .7
-            Saturn.position.x = SaturnR * Math.cos((theta * orbitSpeed) + 3)
-            Saturn.position.z = SaturnR * Math.sin((theta * orbitSpeed) + 3)
+        Callisto.position.x = CallistoR * Math.cos(theta * orbitSpeed) 
+        Callisto.position.z = CallistoR * Math.sin(theta * orbitSpeed) 
+        //Saturn
+        orbitSpeed = .7
+        Saturn.position.x = SaturnR * Math.cos((theta * orbitSpeed) + 3)
+        Saturn.position.z = SaturnR * Math.sin((theta * orbitSpeed) + 3)
 
-            orbitSpeed = 3
-            //Enceladus
-            Enceladus.position.x = EnceladusR * Math.cos(theta * orbitSpeed)
-            Enceladus.position.z = EnceladusR * Math.sin(theta * orbitSpeed)
+        orbitSpeed = 3
+        //Enceladus
+        Enceladus.position.x = EnceladusR * Math.cos(theta * orbitSpeed)
+        Enceladus.position.z = EnceladusR * Math.sin(theta * orbitSpeed)
 
-            //Titan
-            Titan.position.x = TitanR * Math.cos((theta * orbitSpeed) + 2)
-            Titan.position.z = TitanR * Math.sin((theta * orbitSpeed) + 2)
-            //Uranus
-            orbitSpeed = .5
-            Uranus.position.x = UranusR * Math.cos(theta * orbitSpeed) + 2
-            Uranus.position.z = UranusR * Math.sin(theta * orbitSpeed) + 2
-            //Neptune
-            orbitSpeed = .4
-            Neptune.position.x = NeptuneR * Math.cos((theta * orbitSpeed) + 5)
-            Neptune.position.z = NeptuneR * Math.sin((theta * orbitSpeed) + 5)
+        //Titan
+        Titan.position.x = TitanR * Math.cos((theta * orbitSpeed) + 2)
+        Titan.position.z = TitanR * Math.sin((theta * orbitSpeed) + 2)
+        //Uranus
+        orbitSpeed = .5
+        Uranus.position.x = UranusR * Math.cos(theta * orbitSpeed) + 2
+        Uranus.position.z = UranusR * Math.sin(theta * orbitSpeed) + 2
+        //Neptune
+        orbitSpeed = .4
+        Neptune.position.x = NeptuneR * Math.cos((theta * orbitSpeed) + 5)
+        Neptune.position.z = NeptuneR * Math.sin((theta * orbitSpeed) + 5)
 
-            orbitSpeed = 3 
-            Triton.position.x = TritonR * Math.cos(theta * orbitSpeed)
-            Triton.position.z = TritonR * Math.sin(theta * orbitSpeed)
+        orbitSpeed = 3 
+        Triton.position.x = TritonR * Math.cos(theta * orbitSpeed)
+        Triton.position.z = TritonR * Math.sin(theta * orbitSpeed)
 
-            //Pluto
-            orbitSpeed = .1
-            Pluto.position.x = PlutoR * Math.cos(theta * orbitSpeed)
-            Pluto.position.z = PlutoR * Math.sin(theta * orbitSpeed)
+        //Pluto
+        orbitSpeed = .1
+        Pluto.position.x = PlutoR * Math.cos(theta * orbitSpeed)
+        Pluto.position.z = PlutoR * Math.sin(theta * orbitSpeed)
         }
 
         
@@ -515,10 +494,8 @@ export function displayScene()
         requestAnimationFrame(animate)
     }
 
-    //calls the animate function
     animate();
 
-    //defines user controls that can be used to modify the scene
     let gui = new dat.GUI()
     let f = gui.addFolder("Orbit")
     f.add(controls, 'orbit').onChange(animate)
